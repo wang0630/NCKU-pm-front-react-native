@@ -1,24 +1,47 @@
-const change = 'CHANGE_CAMPUS_AREA';
+import * as actions from '../../actions';
 
-const changeCampusArea = (campusArea) => ({
-  type: change,
-  payload: {
-    campusArea
-  }
-});
+// reducers
 
-// const initialState = {
-
-// }
-
-export const campusReducer = (state = {}, action = {}) => {
+// handling campusIndex
+export const campusIndex = (state = {}, action = {}) => {
   switch (action.type) {
-  case change:
-    console.log(state);
-    return { data: 3 };
+    case actions.CHANGE_CAMPUS_AREA:
+      return action.payload.campusIndex;
+    default:
+      return state;
+  }
+};
 
-  default:
-    return state;
-  
+// handling PMData
+/*
+  PMData: {
+    isFetching,
+    error,
+    data
+ }
+*/
+export const fetchingPMData = (state = {}, action = {}) => {
+  switch (action.type) {
+    case actions.GET_PM_DATA_START:
+      return {
+        ...state,
+        error: false,
+        isFetching: action.payload.isFetching,
+      };
+    case actions.GET_PM_DATA_FAIL:
+      return {
+        ...state,
+        error: action.payload.error,
+        isFetching: action.payload.isFetching,
+      };
+    case actions.GET_PM_DATA_END:
+      return {
+        ...state,
+        error: false,
+        isFetching: action.payload.isFetching,
+        data: action.payload.data
+      };
+    default:
+      return state;
   }
 };

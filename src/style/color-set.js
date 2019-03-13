@@ -1,5 +1,5 @@
 const colorSet = {
-  'color-dark-blue': '#111E6C',
+  'color-dark-blue': '#008ECC',
   'color-light-blue': '#0f52ba',
 };
 

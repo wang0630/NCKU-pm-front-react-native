@@ -1,6 +1,8 @@
+import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import CampusDisplay from './campus-display';
 import campusNames from '../../constants/campus-names';
+import SettingButton from '../button/setting-button';
 
 const campusLists = campusNames.map((item, index) => ({
   [`area-${index}`]: {
@@ -17,4 +19,13 @@ const campusTabConfigs = {
 };
 
 const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTabConfigs);
+
+CampusDisplayNavigator.navigationOptions = () => {
+  return ({
+    headerRight: (
+      <SettingButton />
+    )
+  });
+};
+
 export default CampusDisplayNavigator;

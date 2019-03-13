@@ -18,7 +18,10 @@
     "react-navigation": "^3.3.2",
     "react-redux": "^6.0.1",
     "react-router-native": "^4.3.0",
+    "react-thunk": "^1.0.0",
     "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "victory": "^32.0.1",
     "victory-native": "^31.0.0"
   },
   "devDependencies": {
@@ -28,7 +31,9 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "redux-devtools-extension": "^2.13.8",
+    "remote-redux-devtools": "^0.5.16"
   },
   "private": true
 }
