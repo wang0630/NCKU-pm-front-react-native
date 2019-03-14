@@ -3,7 +3,7 @@ import * as actions from '../../actions';
 // reducers
 
 // handling campusIndex
-export const campusIndex = (state = {}, action = {}) => {
+export const campusIndex = (state = 0, action = {}) => {
   switch (action.type) {
     case actions.CHANGE_CAMPUS_AREA:
       return action.payload.campusIndex;
@@ -20,7 +20,13 @@ export const campusIndex = (state = {}, action = {}) => {
     data
  }
 */
-export const fetchingPMData = (state = {}, action = {}) => {
+const initialPMData = {
+  isFetching: false,
+  error: false,
+  data: {}
+};
+
+export const fetchingPMData = (state = initialPMData, action = {}) => {
   switch (action.type) {
     case actions.GET_PM_DATA_START:
       return {

@@ -1,6 +1,6 @@
 import * as actions from '../../redux/actions';
 
-// normal sync action creators
+// normal sync action creators used in async creator
 const getPMDataStart = () => ({
   type: actions.GET_PM_DATA_START,
   payload: {
@@ -24,27 +24,37 @@ const getPMDataFail = () => ({
   }
 });
 
-// Async creator
-export const getPMData = mockdata => (dispatch, getState, axios) => {
+// Async creator as a thunk
+// return a function which accepts dispatch, getstate, and additional dependencies
+export const getPMData = () => (dispatch, getState, axios) => {
   // Inform redux that the fetching has started
   dispatch(getPMDataStart());
-  (async () => {
+  const test = async () => {
     try {
-      const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+      const res = await axios.get('https://jsonplaceholder.typicode.com/todos/4');
       dispatch(getPMDataEnd(res.data));
     } catch (err) {
       dispatch(getPMDataFail());
     }
-  })();
+  };
+  setTimeout(test, 3000);
+  // (async () => {
+  //   try {
+  //     const res = await axios.get('https://jsonplaceholder.typicode.com/todos/4');
+  //     dispatch(getPMDataEnd(res.data));
+  //   } catch (err) {
+  //     dispatch(getPMDataFail());
+  //   }
+  // })();
 };
 
 
 // mapsStateToProps
 // get the whole state tree and return what component needs
 // can access by this.props.campusIndex for example
-export const getCurrentCampusArea = (state) => {
-  const { campusIndex } = state;
-  return { campusIndex };
+export const getCurrentCampusInfo = (state) => {
+  const { campusIndex, PMData } = state;
+  return { campusIndex, PMData };
 };
 
 // mapsDispatchToProps

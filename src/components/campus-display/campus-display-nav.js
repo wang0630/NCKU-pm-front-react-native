@@ -20,12 +20,10 @@ const campusTabConfigs = {
 
 const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTabConfigs);
 
-CampusDisplayNavigator.navigationOptions = () => {
-  return ({
-    headerRight: (
-      <SettingButton />
-    )
-  });
-};
+CampusDisplayNavigator.navigationOptions = () => ({
+  headerRight: (
+    <SettingButton />
+  )
+});
 
 export default CampusDisplayNavigator;

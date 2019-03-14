@@ -5,36 +5,33 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text } from 'react-native';
 import {
   changeCampusArea,
-  getCurrentCampusArea,
+  getCurrentCampusInfo,
   getPMData
 } from './campus-display-actions';
+import Spinner from '../spinner/spinner';
 import style from './campus-display-style';
 
-
 class CampusDisplay extends React.Component {
-  static navigationOptions = () => {
-    return ({
-      tabBarIcon: ({ focused, tintColor }) => {
-        const IconComponent = Ionicons;
-        return (
-          focused
-            ? <IconComponent name="ios-water" size={25} color={tintColor} />
-            : null
-        );
-      },
-    });
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      mockdata: 'There is my mockdata',
-    };
-  }
+  static navigationOptions = () => ({
+    tabBarIcon: ({ focused, tintColor }) => {
+      const IconComponent = Ionicons;
+      return (
+        focused
+          ? <IconComponent name="ios-water" size={25} color={tintColor} />
+          : null
+      );
+    }
+  });
 
   // only called once, this component will stay
   componentDidMount() {
     // console.log('Mount');
+  }
+
+  componentDidUpdate(prevProps) {
+    // console.log(prevProps);
+    // console.log('this is current Props');
+    // console.log(this.props);
   }
 
   componentWillUnmount() {
@@ -48,7 +45,7 @@ class CampusDisplay extends React.Component {
     this.props.changeCampusArea(index);
 
     // dispatch the fetching
-    this.props.getPMData(this.state.mockdata);
+    this.props.getPMData();
   }
 
   render() {
@@ -57,9 +54,26 @@ class CampusDisplay extends React.Component {
         <NavigationEvents
           onWillFocus={this.handleCampusAreaChange}
         />
-        <Text>
-          { `You are in ${this.props.campusIndex}` }
-        </Text>
+        {
+          this.props.PMData.isFetching
+            ? (
+              <Spinner />
+            )
+            : (
+              <Text>
+                { `You are in ${this.props.campusIndex}` }
+              </Text>
+            )
+        }
+        {/* {
+          this.props.PMData.data
+            ? (
+              <Text style={{ color: 'yellow' }}>
+                { this.props.PMData.data.title }
+              </Text>
+            )
+            : null
+        } */}
       </View>
     );
   }
@@ -68,7 +82,7 @@ class CampusDisplay extends React.Component {
 // connect will bind action creator to the dispatch
 // so we can call this.props.action_creator() to dispatch
 export default connect(
-  getCurrentCampusArea,
+  getCurrentCampusInfo,
   {
     changeCampusArea,
     getPMData
