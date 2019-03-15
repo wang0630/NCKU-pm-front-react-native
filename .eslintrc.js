@@ -7,11 +7,12 @@ module.exports = {
     "parser": "babel-eslint", // needed to make babel stuff work properly
     "extends": "airbnb",
     'rules': {
-        'no-use-before-define': 'off',
-        'react/jsx-filename-extension': 'off',
-        'react/prop-types': 'off',
         'comma-dangle': 'off',
         'import/prefer-default-export': 'off',
+        "import/no-extraneous-dependencies": 'off',
+        'no-use-before-define': 'off',
         'react/destructuring-assignment': 'off',
+        'react/jsx-filename-extension': 'off',
+        'react/prop-types': 'off',
     },
 }

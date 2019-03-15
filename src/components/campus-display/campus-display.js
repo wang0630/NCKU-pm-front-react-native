@@ -23,12 +23,23 @@ class CampusDisplay extends React.Component {
     }
   });
 
+  constructor(props) {
+    super(props);
+    const { routeName } = this.props.navigation.state;
+    const index = parseInt(routeName.substr(-1), 10);
+    console.log(`constructor with ${index}`);
+    this.state = {
+      index
+    };
+  }
+
   // only called once, this component will stay
   componentDidMount() {
     // console.log('Mount');
+    console.log(`componentDidMount with ${this.state.index}`);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     // console.log(prevProps);
     // console.log('this is current Props');
     // console.log(this.props);
@@ -36,32 +47,33 @@ class CampusDisplay extends React.Component {
 
   componentWillUnmount() {
     // console.log('Unmount');
+    console.log(`componentWillOnMount with ${this.state.index}`);
   }
 
-  handleCampusAreaChange = (payload) => {
-    // change the index
-    const { routeName } = payload.state;
-    const index = parseInt(routeName.substr(-1), 10);
-    this.props.changeCampusArea(index);
-
+  handleCampusAreaChange = () => {
+    console.log('about to go in to changeCampusArea');
+    // set the selectedCampusArea to current campus
+    this.props.changeCampusArea(this.state.index);
+    console.log('about to go in to getPMData');
     // dispatch the fetching
-    this.props.getPMData();
+    this.props.getPMData(this.state.index);
   }
 
   render() {
+    console.log('inside render');
     return (
       <View style={style.campusDisplay}>
         <NavigationEvents
           onWillFocus={this.handleCampusAreaChange}
         />
         {
-          this.props.PMData.isFetching
+          this.props.campusInfo[this.props.selectedCampus.id].isFetching
             ? (
               <Spinner />
             )
             : (
               <Text>
-                { `You are in ${this.props.campusIndex}` }
+                { `You are in ${this.props.selectedCampus.name}` }
               </Text>
             )
         }
