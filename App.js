@@ -12,7 +12,6 @@ const AppNavigator = createStackNavigator(
     HomeMenu: {
       screen: HomeMenu,
       navigationOptions: {
-        title: 'Home',
         headerBackTitle: null
       }
     },
@@ -24,7 +23,7 @@ const AppNavigator = createStackNavigator(
     initialRouteName: 'HomeMenu',
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: colorSet['color-light-blue']
+        backgroundColor: colorSet['color-brown']
       },
       headerTintColor: '#fff',
       headerTitleStyle: {

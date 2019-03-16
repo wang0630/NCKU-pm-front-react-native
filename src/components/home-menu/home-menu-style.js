@@ -6,7 +6,7 @@ const style = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: colorSet['color-dark-blue'],
+    backgroundColor: colorSet['color-skin'],
   },
   buttonGroup: {
     width: '60%',
@@ -16,8 +16,9 @@ const style = StyleSheet.create({
     padding: 17,
     alignItems: 'center',
     marginBottom: 20,
+    borderWidth: 3,
+    borderColor: colorSet['color-red'],
     borderRadius: 17,
-    backgroundColor: '#8A2BE2'
   },
 });
 export default style;

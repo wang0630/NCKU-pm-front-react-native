@@ -1,34 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
+import { material, human, systemWeights } from 'react-native-typography';
 
-export const HeaderText = ({ children, fontColor, fontSize }) => {
-  const style = StyleSheet.create({
-    header: {
-      color: fontColor,
-      fontWeight: 'bold',
-      fontSize: fontSize || 30,
-    }
-  });
+export const HeaderText = ({ children }) => (
+  <Text style={{
+    ...human.largeTitleObject,
+    ...systemWeights.bold
+  }}
+  >
+    { children }
+  </Text>
+);
 
-  return (
-    <Text style={style.header}>
-      { children }
-    </Text>
-  );
-};
-
-export const NormalText = ({ children, fontColor, fontSize }) => {
-  const style = StyleSheet.create({
-    text: {
-      color: fontColor,
-      fontWeight: 'bold',
-      fontSize: fontSize || 15,
-    }
-  });
-
-  return (
-    <Text style={style.text}>
-      { children}
-    </Text>
-  );
-};
+export const NormalText = ({ children, fontColor }) => (
+  <Text style={{
+    ...material.body2Object,
+    color: fontColor || null
+  }}
+  >
+    { children}
+  </Text>
+);

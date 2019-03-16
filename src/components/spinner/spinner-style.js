@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
+import colorSet from '../../style/color-set';
 
 const style = StyleSheet.create({
   spinnerContainer: {
-    height: '30%',
-    width: '100%',
+    flex: 1, // 100% of the parent, since it is the only child of the parent
     flexDirection: 'row',
-    backgroundColor: 'green',
+    backgroundColor: colorSet['color-brown'],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -13,7 +13,7 @@ const style = StyleSheet.create({
   spinnerChild: {
     width: 10,
     marginLeft: 8,
-    backgroundColor: 'white'
+    backgroundColor: colorSet['color-skin']
   }
 });
 

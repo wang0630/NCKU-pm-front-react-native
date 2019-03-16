@@ -20,10 +20,17 @@ const campusTabConfigs = {
 
 const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTabConfigs);
 
-CampusDisplayNavigator.navigationOptions = () => ({
-  headerRight: (
-    <SettingButton />
-  )
-});
+// the navigationOptions will be the one which is passed to the homeStack
+CampusDisplayNavigator.navigationOptions = ({ navigation }) => {
+  console.log('navigetor called');
+  return {
+    headerRight: (
+      <SettingButton />
+    ),
+    // get the currentactive campusName
+    // navigation.state.index is the number of the active tab
+    headerTitle: campusNames[navigation.state.index]
+  };
+};
 
 export default CampusDisplayNavigator;

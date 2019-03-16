@@ -6,7 +6,8 @@ import { View, Text } from 'react-native';
 import {
   changeCampusArea,
   getCurrentCampusInfo,
-  getPMData
+  getPMData,
+  setInvalidate
 } from './campus-display-actions';
 import Spinner from '../spinner/spinner';
 import style from './campus-display-style';
@@ -20,7 +21,8 @@ class CampusDisplay extends React.Component {
           ? <IconComponent name="ios-water" size={25} color={tintColor} />
           : null
       );
-    }
+    },
+    title: 'hi',
   });
 
   constructor(props) {
@@ -37,6 +39,8 @@ class CampusDisplay extends React.Component {
   componentDidMount() {
     // console.log('Mount');
     console.log(`componentDidMount with ${this.state.index}`);
+    // data should be update after 5 minutes!
+    setInterval(this.props.setInvalidate, 300000);
   }
 
   componentDidUpdate() {
@@ -54,13 +58,17 @@ class CampusDisplay extends React.Component {
     console.log('about to go in to changeCampusArea');
     // set the selectedCampusArea to current campus
     this.props.changeCampusArea(this.state.index);
-    console.log('about to go in to getPMData');
+    console.log('leaving changeCampusArea');
     // dispatch the fetching
+    // if this.props.selectedCampus.id is used here instead of this.state.index
+    // there will be an error, since redux is not updating the store syncly
+    // https://stackoverflow.com/questions/51247040/redux-does-not-update-state-immediately
+
+    // use componenetDidUpdate to get the new value
     this.props.getPMData(this.state.index);
   }
 
   render() {
-    console.log('inside render');
     return (
       <View style={style.campusDisplay}>
         <NavigationEvents
@@ -97,6 +105,7 @@ export default connect(
   getCurrentCampusInfo,
   {
     changeCampusArea,
+    setInvalidate,
     getPMData
   }
 )(CampusDisplay);

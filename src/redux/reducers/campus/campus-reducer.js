@@ -3,6 +3,9 @@ import campusNames from '../../../constants/campus-names';
 
 // reducers
 
+// handling shouldUpdate
+
+
 // handling selectedCampus
 const initialSelectedCampus = {
   name: '成功',
@@ -12,7 +15,7 @@ const initialSelectedCampus = {
 export const selectedCampus = (state = initialSelectedCampus, action = {}) => {
   switch (action.type) {
     case actionTypes.CHANGE_CAMPUS_AREA: {
-      console.log('where am I?');
+      console.log('Enter selectedCampus reducer');
       return {
         name: campusNames[action.payload.campusIndex],
         id: action.payload.campusIndex
@@ -26,7 +29,6 @@ export const selectedCampus = (state = initialSelectedCampus, action = {}) => {
 // handling campus
 
 const initialCampusInfo = {};
-
 for (let i = 0; i < 7; i += 1) {
   initialCampusInfo[i] = {
     isFetching: false,
@@ -35,8 +37,6 @@ for (let i = 0; i < 7; i += 1) {
     data: {}
   };
 }
-
-// handling campus
 export const campusInfo = (state = initialCampusInfo, action = {}) => {
   switch (action.type) {
     case actionTypes.GET_PM_DATA_START: {
@@ -85,7 +85,6 @@ export const fetchingPMData = (state = initialPMData, action = {}) => {
         isValidate: false
       };
     case actionTypes.GET_PM_DATA_END: {
-      console.log('should be here');
       return {
         error: false,
         isFetching: false,

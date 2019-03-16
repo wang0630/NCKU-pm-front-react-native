@@ -23,7 +23,7 @@ const getPMDataFail = (selectedCampusId, error) => ({
     error
   }
 });
-
+// 'http://140.116.82.93:6800'
 // Async creator as a thunk
 // return a function which accepts dispatch, getstate, and additional dependencies
 export const getPMData = selectedCampusId => (dispatch, getState, axios) => {
@@ -31,9 +31,7 @@ export const getPMData = selectedCampusId => (dispatch, getState, axios) => {
   dispatch(getPMDataStart(selectedCampusId));
   (async () => {
     try {
-      const res = await axios.post('http://140.116.82.93:6800', {
-        position: 5
-      });
+      const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
       dispatch(getPMDataEnd(selectedCampusId, res.data));
     } catch (err) {
       // server made a response which falls out the 2xx
@@ -69,4 +67,8 @@ export const changeCampusArea = campusIndex => ({
   payload: {
     campusIndex
   }
+});
+
+export const setInvalidate = () => ({
+  type: actionTypes.SHOULD_UPDATE_PM_DATA,
 });
