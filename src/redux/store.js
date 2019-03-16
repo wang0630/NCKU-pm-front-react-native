@@ -2,13 +2,14 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import { composeWithDevTools } from 'remote-redux-devtools';
-import { selectedCampus, campusInfo } from './reducers/index';
+import { selectedCampus, campusInfo, pmData } from './reducers/index';
 
 // campusIndex: campusReducer(state.campusIndex, action)
 // the key here represents the key in the actual store
 const reducer = combineReducers({
   selectedCampus,
-  campusInfo
+  campusInfo,
+  pmData
 });
 
 export default createStore(reducer, composeWithDevTools(

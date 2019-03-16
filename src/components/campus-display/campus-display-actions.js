@@ -23,33 +23,54 @@ const getPMDataFail = (selectedCampusId, error) => ({
     error
   }
 });
+
+const updatePMData = (selectedCampusId, data) => ({
+  type: actionTypes.UPDATE_PM_DATA,
+  payload: {
+    selectedCampusId,
+    data
+  }
+});
+
+// helper
+const getIsValidate = (state, selectedCampusId) => state.campusInfo[selectedCampusId].isValidate;
+
 // 'http://140.116.82.93:6800'
 // Async creator as a thunk
 // return a function which accepts dispatch, getstate, and additional dependencies
 export const getPMData = selectedCampusId => (dispatch, getState, axios) => {
-  // Inform redux that the fetching has started
-  dispatch(getPMDataStart(selectedCampusId));
-  (async () => {
-    try {
-      const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
-      dispatch(getPMDataEnd(selectedCampusId, res.data));
-    } catch (err) {
-      // server made a response which falls out the 2xx
-      if (err.response) {
-        console.log('out of 2xx');
-        console.log(err);
-        console.log(err.response);
-        dispatch(getPMDataFail(selectedCampusId, err.response.data));
-      // request is sent but no response is made
-      } else if (err.request) {
-        console.log('no response');
-        dispatch(getPMDataFail(selectedCampusId, err.request));
-      } else {
-        console.log('something uncertain');
-        dispatch(getPMDataFail(selectedCampusId, 'Something went wrong'));
+  // check if the data is outdated
+  if (getIsValidate(getState(), selectedCampusId)) {
+    // no need updating
+    console.log('nope');
+  } else {
+    // Inform redux that the fetching has started
+    // show the spinner
+    dispatch(getPMDataStart(selectedCampusId));
+    (async () => {
+      try {
+        const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+        // update the real data
+        dispatch(updatePMData(selectedCampusId, res.data));
+        // set isValidate to true and close the spinner
+        dispatch(getPMDataEnd(selectedCampusId));
+      } catch (err) {
+        // server made a response which falls out the 2xx
+        if (err.response) {
+          console.log('out of 2xx');
+          console.log(err.response);
+          dispatch(getPMDataFail(selectedCampusId, err.response.data));
+        // request is sent but no response is made
+        } else if (err.request) {
+          console.log('no response');
+          dispatch(getPMDataFail(selectedCampusId, err.request));
+        } else {
+          console.log('something uncertain');
+          dispatch(getPMDataFail(selectedCampusId, 'Something went wrong'));
+        }
       }
-    }
-  })();
+    })();
+  }
 };
 
 

@@ -22,7 +22,6 @@ class CampusDisplay extends React.Component {
           : null
       );
     },
-    title: 'hi',
   });
 
   constructor(props) {
@@ -40,7 +39,7 @@ class CampusDisplay extends React.Component {
     // console.log('Mount');
     console.log(`componentDidMount with ${this.state.index}`);
     // data should be update after 5 minutes!
-    setInterval(this.props.setInvalidate, 300000);
+    this.setInvalidateId = setInterval(this.props.setInvalidate, 60000);
   }
 
   componentDidUpdate() {
@@ -50,8 +49,8 @@ class CampusDisplay extends React.Component {
   }
 
   componentWillUnmount() {
-    // console.log('Unmount');
     console.log(`componentWillOnMount with ${this.state.index}`);
+    clearInterval(this.setInvalidateId);
   }
 
   handleCampusAreaChange = () => {
