@@ -22,7 +22,7 @@ const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTa
 
 // the navigationOptions will be the one which is passed to the homeStack
 CampusDisplayNavigator.navigationOptions = ({ navigation }) => {
-  console.log('navigetor called');
+  console.log('navigator called');
   return {
     headerRight: (
       <SettingButton />

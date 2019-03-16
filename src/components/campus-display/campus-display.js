@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationEvents } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import {
   changeCampusArea,
   getCurrentCampusInfo,
   getPMData,
   setInvalidate
 } from './campus-display-actions';
+import CompusDisplayMain from './campus-display-main';
 import Spinner from '../spinner/spinner';
 import style from './campus-display-style';
 
@@ -39,7 +40,11 @@ class CampusDisplay extends React.Component {
     // console.log('Mount');
     console.log(`componentDidMount with ${this.state.index}`);
     // data should be update after 5 minutes!
-    this.setInvalidateId = setInterval(this.props.setInvalidate, 60000);
+    const setInvalidateId = setInterval(
+      this.props.setInvalidate.bind(null, this.state.index),
+      5000
+    );
+    this.setState({ setInvalidateId });
   }
 
   componentDidUpdate() {
@@ -50,7 +55,7 @@ class CampusDisplay extends React.Component {
 
   componentWillUnmount() {
     console.log(`componentWillOnMount with ${this.state.index}`);
-    clearInterval(this.setInvalidateId);
+    clearInterval(this.state.setInvalidateId);
   }
 
   handleCampusAreaChange = () => {
@@ -75,24 +80,9 @@ class CampusDisplay extends React.Component {
         />
         {
           this.props.campusInfo[this.props.selectedCampus.id].isFetching
-            ? (
-              <Spinner />
-            )
-            : (
-              <Text>
-                { `You are in ${this.props.selectedCampus.name}` }
-              </Text>
-            )
+            ? <Spinner />
+            : <CompusDisplayMain />
         }
-        {/* {
-          this.props.PMData.data
-            ? (
-              <Text style={{ color: 'yellow' }}>
-                { this.props.PMData.data.title }
-              </Text>
-            )
-            : null
-        } */}
       </View>
     );
   }

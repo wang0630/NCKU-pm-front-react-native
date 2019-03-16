@@ -21,3 +21,13 @@ export const NormalText = ({ children, fontColor }) => (
     { children}
   </Text>
 );
+
+export const NormalTextLight = ({ children }) => (
+  <Text style={{
+    ...material.body2Object,
+    ...systemWeights.light,
+  }}
+  >
+    { children }
+  </Text>
+);

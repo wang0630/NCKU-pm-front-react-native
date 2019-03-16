@@ -49,7 +49,10 @@ export const getPMData = selectedCampusId => (dispatch, getState, axios) => {
     dispatch(getPMDataStart(selectedCampusId));
     (async () => {
       try {
-        const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+        // const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+        const res = await axios.post('http://140.116.82.93:6800', {
+          position: 5
+        });
         // update the real data
         dispatch(updatePMData(selectedCampusId, res.data));
         // set isValidate to true and close the spinner
@@ -90,6 +93,9 @@ export const changeCampusArea = campusIndex => ({
   }
 });
 
-export const setInvalidate = () => ({
+export const setInvalidate = selectedCampusId => ({
   type: actionTypes.SHOULD_UPDATE_PM_DATA,
+  payload: {
+    selectedCampusId
+  }
 });

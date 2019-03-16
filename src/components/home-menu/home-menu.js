@@ -1,14 +1,16 @@
 import React from 'react';
 import { View, TouchableOpacity, StatusBar } from 'react-native';
 import style from './home-menu-style';
-import { HeaderText, NormalText } from '../text/text';
+import { HeaderText, NormalText, NormalTextLight } from '../text/text';
 import colorSet from '../../style/color-set';
 
 const HomeMenu = ({ navigation }) => (
   <View style={style.home}>
     <StatusBar barStyle="light-content" />
-    <View>
-      <HeaderText> 成大空氣品質App </HeaderText>
+    <View style={style.titleGroup}>
+      <HeaderText> 成大空污雷達 </HeaderText>
+      <View style={style.lightLine} />
+      <NormalTextLight> Developed by Biomedical Imaging Laboratory </NormalTextLight>
     </View>
     <View style={style.buttonGroup}>
       <TouchableOpacity

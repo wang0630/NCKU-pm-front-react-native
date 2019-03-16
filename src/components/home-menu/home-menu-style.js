@@ -8,6 +8,17 @@ const style = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colorSet['color-skin'],
   },
+  lightLine: {
+    height: 2,
+    width: 100,
+    marginTop: -20,
+    backgroundColor: 'silver'
+  },
+  titleGroup: {
+    height: '15%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
   buttonGroup: {
     width: '60%',
   },
