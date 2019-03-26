@@ -7,11 +7,12 @@ import {
   changeCampusArea,
   getCurrentCampusInfo,
   getPMData,
-  setInvalidate
+  getPMDataInit
 } from './campus-display-actions';
 import CompusDisplayMain from './campus-display-main';
 import Spinner from '../spinner/spinner';
 import style from './campus-display-style';
+import { localTimeToTaiwanTime } from '../../services/time';
 
 class CampusDisplay extends React.Component {
   static navigationOptions = () => ({
@@ -31,20 +32,31 @@ class CampusDisplay extends React.Component {
     const index = parseInt(routeName.substr(-1), 10);
     console.log(`constructor with ${index}`);
     this.state = {
-      index
+      index,
+      time: localTimeToTaiwanTime()
     };
   }
 
   // only called once, this component will stay
   componentDidMount() {
-    // console.log('Mount');
     console.log(`componentDidMount with ${this.state.index}`);
-    // data should be update after 5 minutes!
-    const setInvalidateId = setInterval(
-      this.props.setInvalidate.bind(null, this.state.index),
-      5000
-    );
-    this.setState({ setInvalidateId });
+    // Get data when user enter the page
+    this.props.getPMDataInit(this.state.index);
+    // Fire this function every minute for updating time
+    // Also fetch the newest data on specific minute
+    // const timerId = setInterval(() => {
+    //   this.setState({ time: localTimeToTaiwanTime() }, () => {
+    //     const minute = this.state.time.getUTCMinutes();
+    //     if (minute === 0 || minute !== 30) {
+    //       this.props.getPMData(this.state.index);
+    //       console.log('it is about time');
+    //     }
+    //   });
+    // }, 60 * 1000);
+    console.log(this.state.time.getUTCSeconds());
+    setTimeout(this.updateData, 60 - this.state.time.getUTCSeconds());
+    // Store the interval id
+    // this.setState({ timerId });
   }
 
   componentDidUpdate() {
@@ -55,7 +67,20 @@ class CampusDisplay extends React.Component {
 
   componentWillUnmount() {
     console.log(`componentWillOnMount with ${this.state.index}`);
-    clearInterval(this.state.setInvalidateId);
+    // Clean up when unmounted
+    // clearInterval(this.state.timerId);
+  }
+
+  updateData = () => {
+    this.setState({ time: localTimeToTaiwanTime() }, () => {
+      const minute = this.state.time.getUTCMinutes();
+      if (minute === 0 || minute !== 30) {
+        this.props.getPMData(this.state.index);
+        console.log('it is about time');
+      }
+      // Refire this function after one minute
+      setTimeout(this.updateData, 60 * 1000);
+    });
   }
 
   handleCampusAreaChange = () => {
@@ -67,9 +92,6 @@ class CampusDisplay extends React.Component {
     // if this.props.selectedCampus.id is used here instead of this.state.index
     // there will be an error, since redux is not updating the store syncly
     // https://stackoverflow.com/questions/51247040/redux-does-not-update-state-immediately
-
-    // use componenetDidUpdate to get the new value
-    this.props.getPMData(this.state.index);
   }
 
   render() {
@@ -81,7 +103,7 @@ class CampusDisplay extends React.Component {
         {
           this.props.campusInfo[this.props.selectedCampus.id].isFetching
             ? <Spinner />
-            : <CompusDisplayMain />
+            : <CompusDisplayMain curTime={this.state.time} />
         }
       </View>
     );
@@ -94,7 +116,7 @@ export default connect(
   getCurrentCampusInfo,
   {
     changeCampusArea,
-    setInvalidate,
+    getPMDataInit,
     getPMData
   }
 )(CampusDisplay);

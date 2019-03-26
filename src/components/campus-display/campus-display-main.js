@@ -1,12 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import {
   getCurrentCampusInfo,
   getPMData,
 } from './campus-display-actions';
 import style from './campus-display-style';
-import RefreshButton from '../button/refresh-button';
 
 class CampusDisplayMain extends React.Component {
   constructor(props) {
@@ -20,11 +19,9 @@ class CampusDisplayMain extends React.Component {
   render() {
     return (
       <View style={style.campusDisplayMain}>
-        {
-          this.props.campusInfo[this.props.selectedCampus.id].isValidate
-            ? null
-            : <RefreshButton refresh={this.refresh} />
-        }
+        <Text>
+          { `${this.props.curTime.getUTCHours()}:${this.props.curTime.getUTCMinutes()}` }
+        </Text>
       </View>
     );
   }

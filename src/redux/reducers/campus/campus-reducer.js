@@ -35,6 +35,7 @@ export const selectedCampus = (state = initialSelectedCampus, action = {}) => {
   @ GET_PM_DATA_END: Set the isValidate and isFetching is cleared.
   @ GET_PM_DATA_FAIL: Set error to the error message and clear isFetching.
   @ SHOULD_UPDATE_PM_DATA: Clear isValidate since time limit is passed.
+  @ INIT_PM_DATA: Init the data by fetching the data of the last 6 hours.
 
 */
 
@@ -42,7 +43,6 @@ const initialCampusInfo = {};
 for (let i = 0; i < 7; i += 1) {
   initialCampusInfo[i] = {
     isFetching: false,
-    isValidate: false,
     error: false,
     data: i
   };
@@ -65,7 +65,6 @@ export const campusInfo = (state = initialCampusInfo, action) => {
         [id]: {
           ...state[id],
           isFetching: false,
-          isValidate: true
         }
       };
     }
@@ -84,7 +83,6 @@ export const campusInfo = (state = initialCampusInfo, action) => {
         ...state,
         [id]: {
           ...state[id],
-          isValidate: false
         }
       };
     }
@@ -97,7 +95,7 @@ export const campusInfo = (state = initialCampusInfo, action) => {
 
   Update the pmData field of the store
   Accept types:
-  @ UPDATE_PM_DATA: Update the real pmData according to the selecetedCampusId.
+  @ APPEND_PM_DATA: append the real pmData according to the selecetedCampusId.
 
 */
 
@@ -111,8 +109,9 @@ for (let i = 0; i < 7; i += 1) {
 
 export const pmData = (state = initialPMData, action) => {
   const id = action.payload ? action.payload.selectedCampusId : 0;
+  // const id = action.payload ? action.payload.selectedCampusId : 0
   switch (action.type) {
-    case actionTypes.UPDATE_PM_DATA: {
+    case actionTypes.INIT_PM_DATA: {
       return {
         ...state,
         [id]: {
@@ -120,6 +119,17 @@ export const pmData = (state = initialPMData, action) => {
           position: id
         }
       };
+    }
+    case actionTypes.APPEND_PM_DATA: {
+      // Remove the oldest data
+      state[id].data.pm25List.pop();
+      state[id].data.tempList.pop();
+      state[id].data.humidityList.pop();
+      // Append the newest data to the head of the array by unshift
+      state[id].data.pm25List.unshift(action.payload.data.avg_pm25);
+      state[id].data.tempList.unshift(action.payload.data.avg_temp);
+      state[id].data.humidityList.unshift(action.payload.data.avg_humidity);
+      return state;
     }
     default:
       return state;
