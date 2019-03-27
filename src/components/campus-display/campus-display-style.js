@@ -7,8 +7,10 @@ const style = StyleSheet.create({
     backgroundColor: colorSet['color-skin']
   },
   campusDisplayMain: {
+    // height: 400,
     flex: 1,
-    backgroundColor: colorSet['color-skin']
+    alignItems: 'center',
+    backgroundColor: 'skyblue'
   }
 });
 

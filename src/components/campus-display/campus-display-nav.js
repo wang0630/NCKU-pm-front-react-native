@@ -1,8 +1,7 @@
-import React from 'react';
 import { createBottomTabNavigator } from 'react-navigation';
 import CampusDisplay from './campus-display';
 import campusNames from '../../constants/campus-names';
-import SettingButton from '../button/setting-button';
+// import SettingButton from '../button/setting-button';
 
 const campusLists = campusNames.map((item, index) => ({
   [`area-${index}`]: {
@@ -24,9 +23,9 @@ const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTa
 CampusDisplayNavigator.navigationOptions = ({ navigation }) => {
   console.log('navigator called');
   return {
-    headerRight: (
-      <SettingButton />
-    ),
+    // headerRight: (
+    //   <SettingButton />
+    // ),
     // get the currentactive campusName
     // navigation.state.index is the number of the active tab
     headerTitle: campusNames[navigation.state.index]

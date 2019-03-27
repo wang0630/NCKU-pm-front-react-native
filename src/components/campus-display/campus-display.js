@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavigationEvents } from 'react-navigation';
+// import { NavigationEvents } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View } from 'react-native';
+// import { View } from 'react-native';
 import {
   changeCampusArea,
   getCurrentCampusInfo,
@@ -11,7 +11,7 @@ import {
 } from './campus-display-actions';
 import CompusDisplayMain from './campus-display-main';
 import Spinner from '../spinner/spinner';
-import style from './campus-display-style';
+// import style from './campus-display-style';
 import { localTimeToTaiwanTime } from '../../services/time';
 
 class CampusDisplay extends React.Component {
@@ -42,21 +42,7 @@ class CampusDisplay extends React.Component {
     console.log(`componentDidMount with ${this.state.index}`);
     // Get data when user enter the page
     this.props.getPMDataInit(this.state.index);
-    // Fire this function every minute for updating time
-    // Also fetch the newest data on specific minute
-    // const timerId = setInterval(() => {
-    //   this.setState({ time: localTimeToTaiwanTime() }, () => {
-    //     const minute = this.state.time.getUTCMinutes();
-    //     if (minute === 0 || minute !== 30) {
-    //       this.props.getPMData(this.state.index);
-    //       console.log('it is about time');
-    //     }
-    //   });
-    // }, 60 * 1000);
-    console.log(this.state.time.getUTCSeconds());
     setTimeout(this.updateData, 60 - this.state.time.getUTCSeconds());
-    // Store the interval id
-    // this.setState({ timerId });
   }
 
   componentDidUpdate() {
@@ -74,7 +60,7 @@ class CampusDisplay extends React.Component {
   updateData = () => {
     this.setState({ time: localTimeToTaiwanTime() }, () => {
       const minute = this.state.time.getUTCMinutes();
-      if (minute === 0 || minute !== 30) {
+      if (minute === 0 || minute === 30) {
         this.props.getPMData(this.state.index);
         console.log('it is about time');
       }
@@ -95,18 +81,17 @@ class CampusDisplay extends React.Component {
   }
 
   render() {
-    return (
-      <View style={style.campusDisplay}>
-        <NavigationEvents
-          onWillFocus={this.handleCampusAreaChange}
+    const thing = this.props.campusInfo[this.state.index].isFetching
+      ? <Spinner />
+      : (
+        <CompusDisplayMain
+          index={this.state.index}
+          curTime={this.state.time}
         />
-        {
-          this.props.campusInfo[this.props.selectedCampus.id].isFetching
-            ? <Spinner />
-            : <CompusDisplayMain curTime={this.state.time} />
-        }
-      </View>
-    );
+      );
+
+    console.log(this.state.index);
+    return thing;
   }
 }
 

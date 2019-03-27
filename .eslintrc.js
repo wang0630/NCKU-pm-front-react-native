@@ -10,6 +10,7 @@ module.exports = {
         'comma-dangle': 'off',
         'import/prefer-default-export': 'off',
         "import/no-extraneous-dependencies": 'off',
+        'no-param-reassign': 'off',
         'no-use-before-define': 'off',
         'react/destructuring-assignment': 'off',
         'react/jsx-filename-extension': 'off',

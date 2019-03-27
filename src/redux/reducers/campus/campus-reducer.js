@@ -102,7 +102,9 @@ export const campusInfo = (state = initialCampusInfo, action) => {
 const initialPMData = {};
 for (let i = 0; i < 7; i += 1) {
   initialPMData[i] = {
-    data: {},
+    pm25List: [],
+    tempList: [],
+    humidityList: [],
     position: i
   };
 }
@@ -112,23 +114,41 @@ export const pmData = (state = initialPMData, action) => {
   // const id = action.payload ? action.payload.selectedCampusId : 0
   switch (action.type) {
     case actionTypes.INIT_PM_DATA: {
+      const { pm25List, tempList, humidityList } = action.payload.data;
+      // Convert the string representation of time to the Date object
+      pm25List.forEach((item) => {
+        item.time = new Date(item.time);
+      });
+      tempList.forEach((item) => {
+        item.time = new Date(item.time);
+      });
+      humidityList.forEach((item) => {
+        item.time = new Date(item.time);
+      });
       return {
         ...state,
         [id]: {
-          data: action.payload.data,
+          pm25List,
+          tempList,
+          humidityList,
           position: id
         }
       };
     }
     case actionTypes.APPEND_PM_DATA: {
       // Remove the oldest data
-      state[id].data.pm25List.pop();
-      state[id].data.tempList.pop();
-      state[id].data.humidityList.pop();
+      state[id].pm25List.pop();
+      state[id].tempList.pop();
+      state[id].humidityList.pop();
+      // Convert the string representation of time to the Date object
+      const { avg_pm25: pm25, avg_temp: temp, avg_humidity: humidity } = action.payload.data;
+      pm25.time = new Date(pm25.time);
+      temp.time = new Date(temp.time);
+      humidity.time = new Date(pm25.time);
       // Append the newest data to the head of the array by unshift
-      state[id].data.pm25List.unshift(action.payload.data.avg_pm25);
-      state[id].data.tempList.unshift(action.payload.data.avg_temp);
-      state[id].data.humidityList.unshift(action.payload.data.avg_humidity);
+      state[id].pm25List.unshift(pm25);
+      state[id].tempList.unshift(temp);
+      state[id].humidityList.unshift(humidity);
       return state;
     }
     default:

@@ -10,20 +10,17 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^32.0.0",
+    "lodash": "^4.17.11",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-elements": "^1.1.0",
-    "react-native-svg": "^9.3.3",
     "react-native-typography": "^1.4.0",
     "react-native-vector-icons": "^6.3.0",
-    "react-native-viewport-units": "0.0.5",
     "react-navigation": "^3.3.2",
     "react-redux": "^6.0.1",
     "react-router-native": "^4.3.0",
     "react-thunk": "^1.0.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "victory": "^32.0.1",
     "victory-native": "^31.0.0"
   },
   "devDependencies": {

@@ -78,7 +78,7 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
   // Inform redux that the fetching has started
   // show the spinner
   dispatch(getPMDataStart(selectedCampusId));
-  (async () => {
+  const t = async () => {
     try {
       const res = await axios.get('http://140.116.82.93:6800/campus/init/6');
       // console.log(res.data);
@@ -100,7 +100,31 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
         dispatch(getPMDataFail(selectedCampusId, 'Something went wrong'));
       }
     }
-  })();
+  };
+  setTimeout(t, 1000);
+  // (async () => {
+  //   try {
+  //     const res = await axios.get('http://140.116.82.93:6800/campus/init/6');
+  //     // console.log(res.data);
+  //     // update the real data
+  //     dispatch(initPMData(selectedCampusId, res.data));
+  //     // close the spinner
+  //     dispatch(getPMDataEnd(selectedCampusId));
+  //   } catch (err) {
+  //     if (err.response) {
+  //       console.log('out of 2xx');
+  //       console.log(err.response);
+  //       dispatch(getPMDataFail(selectedCampusId, err.response.data));
+  //     // request is sent but no response is made
+  //     } else if (err.request) {
+  //       console.log('no response');
+  //       dispatch(getPMDataFail(selectedCampusId, err.request));
+  //     } else {
+  //       console.log(err);
+  //       dispatch(getPMDataFail(selectedCampusId, 'Something went wrong'));
+  //     }
+  //   }
+  // })();
 };
 
 
@@ -108,8 +132,8 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
 // get the whole state tree and return what component needs
 // can access by this.props.campusInfo for example
 export const getCurrentCampusInfo = (state) => {
-  const { selectedCampus, campusInfo } = state;
-  return { selectedCampus, campusInfo };
+  const { selectedCampus, campusInfo, pmData } = state;
+  return { selectedCampus, campusInfo, pmData };
 };
 
 // mapsDispatchToProps
