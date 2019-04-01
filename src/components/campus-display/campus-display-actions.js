@@ -46,15 +46,16 @@ const appendPMData = (selectedCampusId, data) => ({
 export const getPMData = selectedCampusId => (dispatch, getstate, axios) => {
   // Inform redux that the fetching has started
   // show the spinner
-  dispatch(getPMDataStart(selectedCampusId));
+  // dispatch(getPMDataStart(selectedCampusId));
   (async () => {
     try {
-      // const res = await axios.get('https://jsonplaceholder.typicode.com/todos/1');
+      console.log(`now appending id: ${selectedCampusId}`);
       const res = await axios.get(`http://140.116.82.93:6800/campus/${selectedCampusId}`);
+      console.log('in action');
       // append the newest data
       dispatch(appendPMData(selectedCampusId, res.data));
       // close the spinner
-      dispatch(getPMDataEnd(selectedCampusId));
+      // dispatch(getPMDataEnd(selectedCampusId));
     } catch (err) {
       // server made a response which falls out the 2xx
       if (err.response) {
@@ -80,7 +81,8 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
   dispatch(getPMDataStart(selectedCampusId));
   const t = async () => {
     try {
-      const res = await axios.get('http://140.116.82.93:6800/campus/init/6');
+      console.log(`now init id: ${selectedCampusId}`);
+      const res = await axios.get(`http://140.116.82.93:6800/campus/init/${selectedCampusId}`);
       // console.log(res.data);
       // update the real data
       dispatch(initPMData(selectedCampusId, res.data));
@@ -131,8 +133,12 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
 // mapsStateToProps
 // get the whole state tree and return what component needs
 // can access by this.props.campusInfo for example
-export const getCurrentCampusInfo = (state) => {
+export const getCurrentCampusInfo = (state, ownProps) => {
+  const { navigation } = ownProps;
+  // const { routeName } = navigation.state;
+  // const campusId = parseInt(routeName.substr(-1), 10);
   const { selectedCampus, campusInfo, pmData } = state;
+  console.log('nav', navigation);
   return { selectedCampus, campusInfo, pmData };
 };
 

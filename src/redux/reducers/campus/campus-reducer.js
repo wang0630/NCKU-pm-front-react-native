@@ -110,10 +110,10 @@ for (let i = 0; i < 7; i += 1) {
 }
 
 export const pmData = (state = initialPMData, action) => {
-  const id = action.payload ? action.payload.selectedCampusId : 0;
   // const id = action.payload ? action.payload.selectedCampusId : 0
   switch (action.type) {
     case actionTypes.INIT_PM_DATA: {
+      const id = action.payload.selectedCampusId;
       const { pm25List, tempList, humidityList } = action.payload.data;
       // Convert the string representation of time to the Date object
       pm25List.forEach((item) => {
@@ -125,6 +125,7 @@ export const pmData = (state = initialPMData, action) => {
       humidityList.forEach((item) => {
         item.time = new Date(item.time);
       });
+      console.log('before return init');
       return {
         ...state,
         [id]: {
@@ -136,20 +137,30 @@ export const pmData = (state = initialPMData, action) => {
       };
     }
     case actionTypes.APPEND_PM_DATA: {
-      // Remove the oldest data
-      state[id].pm25List.pop();
-      state[id].tempList.pop();
-      state[id].humidityList.pop();
+      const id = action.payload.selectedCampusId;
+      // Shollow copy the state array without the last (oldest) data
+      const pm25List = state[id].pm25List.slice(0, -1);
+      const tempList = state[id].tempList.slice(0, -1);
+      const humidityList = state[id].humidityList.slice(0, -1);
       // Convert the string representation of time to the Date object
       const { avg_pm25: pm25, avg_temp: temp, avg_humidity: humidity } = action.payload.data;
       pm25.time = new Date(pm25.time);
       temp.time = new Date(temp.time);
       humidity.time = new Date(pm25.time);
       // Append the newest data to the head of the array by unshift
-      state[id].pm25List.unshift(pm25);
-      state[id].tempList.unshift(temp);
-      state[id].humidityList.unshift(humidity);
-      return state;
+      pm25List.unshift(pm25);
+      tempList.unshift(temp);
+      humidityList.unshift(humidity);
+      console.log('before return');
+      return {
+        ...state,
+        [id]: {
+          pm25List,
+          tempList,
+          humidityList,
+          position: id
+        }
+      };
     }
     default:
       return state;

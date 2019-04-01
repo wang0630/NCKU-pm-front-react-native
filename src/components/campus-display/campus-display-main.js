@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 import {
   getCurrentCampusInfo,
   getPMData,
@@ -16,44 +17,38 @@ class CampusDisplayMain extends React.Component {
     }
   }
 
-  getTickValue = (dataType, dataField) => {
-
-  }
-
   render() {
-    const hour = this.props.curTime.getUTCHours();
     return (
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={style.campusDisplayMain}>
-        <Text>
-          { `現在時間：${hour}:${this.props.curTime.getUTCMinutes()}` }
-        </Text>
+      <ScrollView contentContainerStyle={style.campusDisplayMain}>
         {/* \u03BC is mu, \xB3 is cube */}
-        <Chart
-          target="pm25"
-          targetList={this.props.pmData[this.props.index].pm25List}
-          text="PM2.5 density in past six hours"
-          valueArray={[20, 30, 40, 50, 60, 70, 80]}
-          tickFormat={y => `${y}\n\u03BCg/m\xB3`}
-        />
-        <Chart
-          target="temp"
-          targetList={this.props.pmData[this.props.index].tempList}
-          text="Temperature in past six hours"
-          valueArray={[20, 30, 40, 50, 60, 70, 80]}
-          tickFormat={y => `${y}\xB0C`}
-        />
-        <Text> aasasas </Text>
-        <Text> aasasas </Text>
-        <Text> aasasas </Text>
-        <Text> aasasas </Text>
-        <Text> aasasas </Text>
-        {/* <Chart
-          target="humidity"
-          targetList={this.props.pmData[this.props.index].humidityList}
-          text="Humidity in past six hours"
-          valueArray={[20, 30, 40, 50, 60, 70, 80]}
-          tickFormat={y => `${y}%`}
-        /> */}
+        {/* pointerEvents to none to prevent chart from touch event */}
+        {/* So the chart can be scrolled in ScrollView */}
+        <View pointerEvents="none">
+          <Chart
+            target="pm25"
+            targetList={this.props.pmData[this.props.index].pm25List}
+            text="PM2.5 density in past six hours"
+            valueArray={_.range(0, 201, 20)}
+            tickFormat={y => `${y}\n\u03BCg/m\xB3`}
+            domain={[0, 200]}
+          />
+          <Chart
+            target="temp"
+            targetList={this.props.pmData[this.props.index].tempList}
+            text="Temperature in past six hours"
+            valueArray={_.range(0, 51, 5)}
+            tickFormat={y => `${y}\xB0C`}
+            domain={[0, 50]}
+          />
+          <Chart
+            target="humidity"
+            targetList={this.props.pmData[this.props.index].humidityList}
+            text="Humidity in past six hours"
+            valueArray={_.range(0, 101, 10)}
+            tickFormat={y => `${y}%`}
+            domain={[0, 100]}
+          />
+        </View>
       </ScrollView>
     );
   }
