@@ -9,13 +9,14 @@ module.exports = {
     'rules': {
         'comma-dangle': 'off',
         'import/prefer-default-export': 'off',
-        "import/no-extraneous-dependencies": 'off',
+        'import/no-extraneous-dependencies': 'off',
         'no-param-reassign': 'off',
         'no-use-before-define': 'off',
         'react/destructuring-assignment': 'off',
         'react/jsx-filename-extension': 'off',
         'react/prop-types': 'off',
         'react/no-access-state-in-setstate': 'off',
-        "react/jsx-boolean-value": 'off'
+        'react/no-did-update-set-state': 'off',
+        'react/jsx-boolean-value': 'off'
     },
 }

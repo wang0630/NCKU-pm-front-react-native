@@ -1,9 +1,8 @@
 import React from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import {
-  getCurrentCampusInfo,
   getPMData,
 } from './campus-display-actions';
 import Chart from './campus-display-chart';
@@ -18,6 +17,7 @@ class CampusDisplayMain extends React.Component {
   }
 
   render() {
+    console.log('render in ', this.props.index);
     return (
       <ScrollView contentContainerStyle={style.campusDisplayMain}>
         {/* \u03BC is mu, \xB3 is cube */}
@@ -26,7 +26,7 @@ class CampusDisplayMain extends React.Component {
         <View pointerEvents="none">
           <Chart
             target="pm25"
-            targetList={this.props.pmData[this.props.index].pm25List}
+            targetList={this.props.pm25List}
             text="PM2.5 density in past six hours"
             valueArray={_.range(0, 201, 20)}
             tickFormat={y => `${y}\n\u03BCg/m\xB3`}
@@ -34,7 +34,7 @@ class CampusDisplayMain extends React.Component {
           />
           <Chart
             target="temp"
-            targetList={this.props.pmData[this.props.index].tempList}
+            targetList={this.props.tempList}
             text="Temperature in past six hours"
             valueArray={_.range(0, 51, 5)}
             tickFormat={y => `${y}\xB0C`}
@@ -42,7 +42,7 @@ class CampusDisplayMain extends React.Component {
           />
           <Chart
             target="humidity"
-            targetList={this.props.pmData[this.props.index].humidityList}
+            targetList={this.props.humidityList}
             text="Humidity in past six hours"
             valueArray={_.range(0, 101, 10)}
             tickFormat={y => `${y}%`}
@@ -54,8 +54,18 @@ class CampusDisplayMain extends React.Component {
   }
 }
 
+/*
+  Get only its own campus data to prevent re-rendering
+  means only re-render when its own campus data actually change
+*/
+const getPartialPMData = (state, ownProps) => {
+  const { index } = ownProps;
+  const { pmData } = state;
+  return pmData[index];
+};
+
 export default connect(
-  getCurrentCampusInfo,
+  getPartialPMData,
   {
     getPMData
   }

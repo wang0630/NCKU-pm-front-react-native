@@ -129,19 +129,6 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
   // })();
 };
 
-
-// mapsStateToProps
-// get the whole state tree and return what component needs
-// can access by this.props.campusInfo for example
-export const getCurrentCampusInfo = (state, ownProps) => {
-  const { navigation } = ownProps;
-  // const { routeName } = navigation.state;
-  // const campusId = parseInt(routeName.substr(-1), 10);
-  const { selectedCampus, campusInfo, pmData } = state;
-  console.log('nav', navigation);
-  return { selectedCampus, campusInfo, pmData };
-};
-
 // mapsDispatchToProps
 export const changeCampusArea = campusIndex => ({
   type: actionTypes.CHANGE_CAMPUS_AREA,

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 // import { View } from 'react-native';
 import {
   changeCampusArea,
-  getCurrentCampusInfo,
   getPMData,
   getPMDataInit
 } from './campus-display-actions';
@@ -23,11 +22,11 @@ class CampusDisplay extends React.Component {
     super(props);
     const { routeName } = this.props.navigation.state;
     const index = parseInt(routeName.substr(-1), 10);
-    console.log(this.props.navigation.state);
     console.log(`constructor with ${index}`);
     this.state = {
       index,
       mountedTime: localTimeToTaiwanTime(),
+      didTimeoutFired: false,
     };
   }
 
@@ -40,30 +39,40 @@ class CampusDisplay extends React.Component {
 
   componentDidUpdate(prevProps) {
     // After the init, setInterval for the updating
-    if (prevProps.campusInfo[this.state.index].isFetching
-      && !this.props.campusInfo[this.state.index].isFetching) {
+    if (prevProps.campusInfo.isFetching
+      && !this.props.campusInfo.isFetching) {
       const minute = this.state.mountedTime.getUTCMinutes();
       const nextTime = minute < 30 ? 30 - minute : 60 - minute;
-      setTimeout(this.updateData, nextTime * 60 * 1000);
+      const timerId = setTimeout(this.updateData, nextTime * 60 * 1000);
+      this.setState({ timerId });
     }
   }
 
   componentWillUnmount() {
     console.log(`componentWillOnMount with ${this.state.index}`);
     // Clean up when unmounted
-    clearInterval(this.state.timerId);
+    if (this.state.didTimeoutFired) {
+      clearInterval(this.state.timerId);
+    } else {
+      clearTimeout(this.state.timerId);
+    }
   }
 
   updateData = () => {
     this.props.getPMData(this.state.index);
     console.log('it is about time');
-    // Refire this function after one minute
-    const timerId = setInterval(this.updateData, 30 * 60 * 1000);
-    this.setState({ timerId });
+    // Refire this function after a half hour
+    if (!this.state.didTimeoutFired) {
+      const timerId = setInterval(this.updateData, 30 * 60 * 1000);
+      this.setState({
+        timerId,
+        didTimeoutFired: true
+      });
+    }
   }
 
   render() {
-    const thing = this.props.campusInfo[this.state.index].isFetching
+    const thing = this.props.campusInfo.isFetching
       ? <Spinner />
       : (
         <CompusDisplayMain
@@ -74,6 +83,17 @@ class CampusDisplay extends React.Component {
     return thing;
   }
 }
+
+// mapsStateToProps
+// get the whole state tree and return what component needs
+// can access by this.props.campusInfo for example
+export const getCurrentCampusInfo = (state, ownProps) => {
+  const { routeName } = ownProps.navigation.state;
+  const index = parseInt(routeName.substr(-1), 10);
+  return {
+    campusInfo: state.campusInfo[index]
+  };
+};
 
 // connect will bind action creator to the dispatch
 // so we can call this.props.action_creator() to dispatch
