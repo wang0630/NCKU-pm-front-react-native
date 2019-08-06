@@ -72,6 +72,7 @@ class CampusDisplay extends React.Component {
   }
 
   render() {
+    console.log('campusInfo', this.props.campusInfo);
     const thing = this.props.campusInfo.isFetching
       ? <Spinner />
       : (

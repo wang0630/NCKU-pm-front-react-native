@@ -40,7 +40,7 @@ export const selectedCampus = (state = initialSelectedCampus, action = {}) => {
 */
 
 const initialCampusInfo = {};
-for (let i = 0; i < 7; i += 1) {
+for (let i = 0; i < campusNames.length; i += 1) {
   initialCampusInfo[i] = {
     isFetching: false,
     error: false,
@@ -100,7 +100,7 @@ export const campusInfo = (state = initialCampusInfo, action) => {
 */
 
 const initialPMData = {};
-for (let i = 0; i < 7; i += 1) {
+for (let i = 0; i < campusNames.length; i += 1) {
   initialPMData[i] = {
     pm25List: [],
     tempList: [],

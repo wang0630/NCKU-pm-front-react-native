@@ -42,6 +42,7 @@ const CampusDisplayNavigator = createBottomTabNavigator(campusListsObj, campusTa
 // the navigationOptions will be the one which is passed to the homeStack
 // because this tabNavigator is the child of the homestack
 CampusDisplayNavigator.navigationOptions = ({ navigation }) => {
+  console.log('navigation', navigation);
   console.log('navigator called');
   return {
     // get the currentactive campusName
