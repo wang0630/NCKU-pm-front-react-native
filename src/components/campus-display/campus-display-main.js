@@ -17,7 +17,6 @@ class CampusDisplayMain extends React.Component {
   }
 
   render() {
-    console.log('render in ', this.props.index);
     return (
       <ScrollView contentContainerStyle={style.campusDisplayMain}>
         {/* \u03BC is mu, \xB3 is cube */}
@@ -61,6 +60,7 @@ class CampusDisplayMain extends React.Component {
 const getPartialPMData = (state, ownProps) => {
   const { index } = ownProps;
   const { pmData } = state;
+  // console.log(pmData[index]);
   return pmData[index];
 };
 

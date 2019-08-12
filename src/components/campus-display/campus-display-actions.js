@@ -51,7 +51,6 @@ export const getPMData = selectedCampusId => (dispatch, getstate, axios) => {
     try {
       console.log(`now appending id: ${selectedCampusId}`);
       const res = await axios.get(`http://140.116.82.93:6800/campus/${selectedCampusId}`);
-      console.log('in action');
       // append the newest data
       dispatch(appendPMData(selectedCampusId, res.data));
       // close the spinner
@@ -59,7 +58,6 @@ export const getPMData = selectedCampusId => (dispatch, getstate, axios) => {
     } catch (err) {
       // server made a response which falls out the 2xx
       if (err.response) {
-        console.log('out of 2xx');
         console.log(err.response);
         dispatch(getPMDataFail(selectedCampusId, err.response.data));
       // request is sent but no response is made
@@ -83,7 +81,6 @@ export const getPMDataInit = selectedCampusId => (dispatch, getstate, axios) => 
     try {
       console.log(`now init id: ${selectedCampusId}`);
       const res = await axios.get(`http://140.116.82.93:6800/campus/init/${selectedCampusId}`);
-      // console.log(res.data);
       // update the real data
       dispatch(initPMData(selectedCampusId, res.data));
       // close the spinner

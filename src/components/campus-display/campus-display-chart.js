@@ -7,7 +7,6 @@ import {
   VictoryLabel,
 } from 'victory-native';
 
-
 export default ({
   target,
   targetList,
@@ -29,7 +28,7 @@ export default ({
           left: 60,
           right: 60
         }}
-        animate={{ duration: 2000 }}
+        animate={{ duration: 1000 }}
       >
         <VictoryLabel text={text} x={190} y={20} textAnchor="middle" />
         <VictoryAxis />

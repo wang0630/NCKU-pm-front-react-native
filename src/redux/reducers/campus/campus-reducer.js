@@ -27,26 +27,23 @@ export const selectedCampus = (state = initialSelectedCampus, action = {}) => {
   }
 };
 
-/*
-
-  Update the campusInfo field of the store
-  Accept types:
-  @ GET_PM_DATA_START: Set the isFetching, isValidate is still cleared.
-  @ GET_PM_DATA_END: Set the isValidate and isFetching is cleared.
-  @ GET_PM_DATA_FAIL: Set error to the error message and clear isFetching.
-  @ SHOULD_UPDATE_PM_DATA: Clear isValidate since time limit is passed.
-  @ INIT_PM_DATA: Init the data by fetching the data of the last 6 hours.
-
-*/
-
 const initialCampusInfo = {};
 for (let i = 0; i < campusNames.length; i += 1) {
   initialCampusInfo[i] = {
     isFetching: false,
     error: false,
-    data: i
   };
 }
+
+/**
+  Update the campusInfo field of the store
+  @function
+  Accept types:
+  @param GET_PM_DATA_START Set the isFetching, isValidate is still cleared.
+  @param GET_PM_DATA_END Set the isValidate and isFetching is cleared.
+  @param GET_PM_DATA_FAIL Set error to the error message and clear isFetching.
+*/
+
 export const campusInfo = (state = initialCampusInfo, action) => {
   const id = action.payload ? action.payload.selectedCampusId : 0;
   switch (action.type) {
@@ -78,26 +75,10 @@ export const campusInfo = (state = initialCampusInfo, action) => {
         }
       };
     }
-    case actionTypes.SHOULD_UPDATE_PM_DATA: {
-      return {
-        ...state,
-        [id]: {
-          ...state[id],
-        }
-      };
-    }
     default:
       return state;
   }
 };
-
-/*
-
-  Update the pmData field of the store
-  Accept types:
-  @ APPEND_PM_DATA: append the real pmData according to the selecetedCampusId.
-
-*/
 
 const initialPMData = {};
 for (let i = 0; i < campusNames.length; i += 1) {
@@ -108,6 +89,16 @@ for (let i = 0; i < campusNames.length; i += 1) {
     position: i
   };
 }
+
+/**
+  Update the pmData field of the store
+  @function
+  Accept types:
+  @param APPEND_PM_DATA  append the real pmData according to the selecetedCampusId.
+  @param INIT_PM_DATA Init the data by fetching the data of the last 6 hours.
+
+*/
+
 
 export const pmData = (state = initialPMData, action) => {
   // const id = action.payload ? action.payload.selectedCampusId : 0

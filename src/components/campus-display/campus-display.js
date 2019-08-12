@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { View } from 'react-native';
 import {
   changeCampusArea,
   getPMData,
@@ -22,7 +21,6 @@ class CampusDisplay extends React.Component {
     super(props);
     const { routeName } = this.props.navigation.state;
     const index = parseInt(routeName.substr(-1), 10);
-    console.log(`constructor with ${index}`);
     this.state = {
       index,
       mountedTime: localTimeToTaiwanTime(),
@@ -60,7 +58,6 @@ class CampusDisplay extends React.Component {
 
   updateData = () => {
     this.props.getPMData(this.state.index);
-    console.log('it is about time');
     // Refire this function after a half hour
     if (!this.state.didTimeoutFired) {
       const timerId = setInterval(this.updateData, 30 * 60 * 1000);
@@ -72,13 +69,11 @@ class CampusDisplay extends React.Component {
   }
 
   render() {
-    console.log('campusInfo', this.props.campusInfo);
     const thing = this.props.campusInfo.isFetching
       ? <Spinner />
       : (
         <CompusDisplayMain
           index={this.state.index}
-          // curTime={this.state.time}
         />
       );
     return thing;
