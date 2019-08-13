@@ -28,6 +28,10 @@ export default ({
           left: 60,
           right: 60
         }}
+        // animate={{
+        //   duration: 1000,
+        //   // onLoad: { duration: 1500 }
+        // }}
       >
         <VictoryLabel text={text} x={190} y={20} textAnchor="middle" />
         <VictoryAxis />
@@ -43,7 +47,6 @@ export default ({
           x="time"
           y={target}
           style={chartStyle.line}
-          // animate={{ duration: 1000 }}
         />
       </VictoryChart>
     );
