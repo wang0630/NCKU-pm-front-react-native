@@ -28,7 +28,7 @@ export default ({
           left: 60,
           right: 60
         }}
-        animate={{ duration: 1000 }}
+        // animate={{ duration: 2000 }}
       >
         <VictoryLabel text={text} x={190} y={20} textAnchor="middle" />
         <VictoryAxis />
@@ -55,7 +55,7 @@ const chartStyle = {
   line: {
     data: {
       stroke: '#ad1b11',
-      strokeWidth: 3
+      strokeWidth: 5
     },
     label: {
       fontSize: 5,
