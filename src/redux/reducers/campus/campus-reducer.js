@@ -116,7 +116,6 @@ export const pmData = (state = initialPMData, action) => {
       humidityList.forEach((item) => {
         item.time = new Date(item.time);
       });
-      console.log('before return init');
       return {
         ...state,
         [id]: {
@@ -142,7 +141,6 @@ export const pmData = (state = initialPMData, action) => {
       pm25List.unshift(pm25);
       tempList.unshift(temp);
       humidityList.unshift(humidity);
-      console.log('before return');
       return {
         ...state,
         [id]: {
