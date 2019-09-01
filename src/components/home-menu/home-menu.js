@@ -22,9 +22,7 @@ const HomeMenu = ({ navigation }) => (
 
       <TouchableOpacity
         style={style.button}
-        onPress={() => {
-          console.log('cool');
-        }}
+        onPress={() => { navigation.navigate('Prediction'); }}
       >
         <NormalText fontColor={colorSet['color-red']}> 空氣品質預測 </NormalText>
       </TouchableOpacity>

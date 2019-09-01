@@ -60,7 +60,6 @@ class CampusDisplayMain extends React.Component {
 const getPartialPMData = (state, ownProps) => {
   const { index } = ownProps;
   const { pmData } = state;
-  // console.log(pmData[index]);
   return pmData[index];
 };
 

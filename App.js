@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import HomeMenu from './src/components/home-menu/home-menu';
 import CampusDisplayNavigator from './src/components/campus-display/campus-display-nav';
+import Prediction from './src/components/prediction/prediction';
 import store from './src/redux/store';
 import colorSet from './src/style/color-set';
 
@@ -17,7 +18,10 @@ const AppNavigator = createStackNavigator(
     },
     CampusDisplay: {
       screen: CampusDisplayNavigator
-    }
+    },
+    Prediction: {
+      screen: Prediction,
+    },
   },
   {
     initialRouteName: 'HomeMenu',
@@ -36,12 +40,20 @@ const AppNavigator = createStackNavigator(
 const AppContainer = createAppContainer(AppNavigator);
 
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <AppContainer />
-      </Provider>
-    );
-  }
-}
+const App = () => (
+  <Provider store={store}>
+    <AppContainer />
+  </Provider>
+);
+
+export default App;
+
+// export default class App extends React.Component {
+//   render() {
+//     return (
+//       <Provider store={store}>
+//         <AppContainer />
+//       </Provider>
+//     );
+//   }
+// }
