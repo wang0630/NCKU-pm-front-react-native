@@ -87,7 +87,7 @@ export const getCurrentCampusInfo = (state, ownProps) => {
   const { routeName } = ownProps.navigation.state;
   const index = parseInt(routeName.substr(-1), 10);
   return {
-    campusInfo: state.campusInfo[index]
+    campusInfo: state.campusInfo[index],
   };
 };
 
