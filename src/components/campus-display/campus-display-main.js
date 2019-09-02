@@ -27,17 +27,17 @@ class CampusDisplayMain extends React.Component {
             target="pm25"
             targetList={this.props.pm25List}
             text="PM2.5 density in past six hours"
-            valueArray={_.range(0, 201, 20)}
+            valueArray={_.range(0, 71, 10)}
             tickFormat={y => `${y}\n\u03BCg/m\xB3`}
-            domain={[0, 200]}
+            domain={[0, 70]}
           />
           <Chart
             target="temp"
             targetList={this.props.tempList}
             text="Temperature in past six hours"
-            valueArray={_.range(0, 51, 5)}
+            valueArray={_.range(10, 41, 10)}
             tickFormat={y => `${y}\xB0C`}
-            domain={[0, 50]}
+            domain={[0, 40]}
           />
           <Chart
             target="humidity"
