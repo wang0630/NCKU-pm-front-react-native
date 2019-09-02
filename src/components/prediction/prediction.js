@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { View, Picker } from 'react-native';
+import axios from 'axios';
 import { getPMDataInit } from '../campus-display/campus-display-actions';
 import { HeaderText, NormalText } from '../text/text';
 import Spinner from '../spinner/spinner';
 import campusNames from '../../constants/campus-names';
+import RETURNMODEL from '../../constants/campus-formula';
 import style from './prediction-style';
 
-const returnFormula = (pm25, pm25P1, h, ws, rain, intercept) => (
-  1.0634 * pm25 + 0.023 * h + 0.052 * ws + 0.0025 * rain + 0.144 * pm25P1 + 0.0081 * intercept
-);
+const returnPrediction = (index, pm25, pm25P1, h, ws, rain) => {
+  const model = RETURNMODEL[index];
+  return ((model.pm25 * (pm25 - model.m_pm25)) / model.s_pm25
+    + (model.h * (h - model.m_h)) / model.s_h
+    + (model.ws * (ws - model.m_ws)) / model.s_ws
+    + (model.pm25P1 * (pm25P1 - model.m_pm25P1)) / model.s_pm25P1
+    + (model.rain * (rain - model.m_rain)) / model.s_rain
+    + model.intercept) * model.s + model.m;
+};
 
 const Prediction = (props) => {
   const [prediction, setPrediction] = useState(0);
   const [selected, setSelected] = useState(0);
-  // const [rain, setRain] = useState(0);
-  // const [ws, setws] = useState(0);
+  const [bureauFetch, setbureauFetch] = useState(false);
+  const [rain, setRain] = useState(0);
+  const [ws, setws] = useState(0);
 
   // Fire the api when mounting
   useEffect(() => {
@@ -27,8 +36,23 @@ const Prediction = (props) => {
 
   // Get rain data and ws from Weather Bureau
   useEffect(() => {
+    const getRainAndWs = async () => {
+      try {
+        setbureauFetch(true);
+        const res = await Promise.all([
+          axios.get(`http://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?authorization=CWB-13E43698-F2E2-45C4-A5B0-A805260E96B7&elementName=WDSD&locationName=${encodeURIComponent('永康')}`),
+          axios.get(`http://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0002-001?authorization=CWB-13E43698-F2E2-45C4-A5B0-A805260E96B7&elementName=NOW&locationName=${encodeURIComponent('永康')}`)
+        ]);
+        setws(res[0].data.records.location[0].weatherElement[0].elementValue);
+        setRain(res[1].data.records.location[0].weatherElement[0].elementValue);
+        setbureauFetch(false);
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
-  });
+    getRainAndWs();
+  }, []);
 
   // Change the display value
   useEffect(() => {
@@ -42,10 +66,10 @@ const Prediction = (props) => {
     const pm25 = helper(data.pm25List, 'pm25');
     const pm25P1 = helper(data.pm25List, 'pm25', LAST - 2);
     // Round to the first digit
-    setPrediction(Math.round(returnFormula(pm25, pm25P1, humidity, 40, 10, 0.08) * 10) / 10);
-  }, [selected, props.pmData]);
+    setPrediction(Math.round(returnPrediction(selected, pm25, pm25P1, humidity, ws, rain) * 10) / 10);
+  }, [ws, rain, selected, props.pmData]);
 
-  const thing = props.campusInfo.isFetching
+  const thing = props.campusInfo.isFetching || bureauFetch
     ? <Spinner />
     : (
       <View
